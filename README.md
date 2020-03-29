@@ -22,8 +22,7 @@ Composite video with background image, audio, waveform animation, and subtitles.
 macOS
 
 ```sh
-brew install ffmpeg envsubst
-# Be sure to add /usr/local/opt/gettext/bin to $PATH
+brew install ffmpeg
 ```
 
 ### Usage
