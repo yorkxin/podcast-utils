@@ -66,6 +66,59 @@ Setup `gcloud` and Google Cloud STT by following instructions on [Quickstart](ht
 
 * Try `export GOOGLE_APPLICATION_CREDENTIALS=</absolute_path_to_credentials_json>`
 
+## detect-silence.sh
+
+Detect silence ranges.
+
+This tool is useful to set timestamps in subtitles.
+
+### Setup
+
+macOS
+
+```sh
+brew install ffmpeg jq
+```
+
+### Usage
+
+```sh
+./detect-silence.sh audio.mp3
+
+# Use -n to specify silence threshold (default: -60dB)
+./detect-silence.sh -n -30dB audio.mp3
+
+# Use -d to specify duration threshold, in seconds (default: 0.1)
+./detect-silence.sh -d 0.3 audio.mp3
+```
+
+Output is a JSON like this:
+
+```json
+[
+  {
+    "start": 0,
+    "end": 0.37737
+  },
+  {
+    "start": 3.55317,
+    "end": 4.0927
+  },
+  {
+    "start": 6.52252,
+    "end": 6.65796
+  },
+  {
+    "start": 8.39494,
+    "end": 8.57649
+  },
+  {
+    "start": 10.0297,
+    "end": 10.4743
+  }
+]
+```
+
 ## License
 
 MIT License, See [LICENSE](./LICENSE) file.
