@@ -6,6 +6,17 @@ Utilities for [amcy.fm](https://amcy.fm/) Podcast Production
 
 Composite video with background image, audio, waveform animation, and subtitles.
 
+### Hard-coded configuration
+
+* Background image is 1000x1000 pixels
+* waveform style is `cline`, black, 25 fps, 840x840, center-positioned
+* Subtitles is rendered with
+    * font family `jf-openhuninn-1.0` (installed on your computer)
+    * font size 70px
+    * color `black`
+    * no outline
+    * margin top 700 px from the canvas
+
 ### Setup
 
 macOS
