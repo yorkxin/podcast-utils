@@ -55,3 +55,7 @@ Setup `gcloud` and Google Cloud STT by following instructions on [Quickstart](ht
 401 Unauthorized
 
 * Try `export GOOGLE_APPLICATION_CREDENTIALS=</absolute_path_to_credentials_json>`
+
+## License
+
+MIT License, See [LICENSE](./LICENSE) file.
