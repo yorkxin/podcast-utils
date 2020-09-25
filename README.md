@@ -123,7 +123,7 @@ Output is a JSON like this:
 
 ## Autosub Usage
 
-Speech-to-Text (STT) using Google Cloud API. This tool generates VTT files so you can apply to ffmpeg.
+[`autosub`](https://github.com/BingLingGroup/autosub) is a tool that runs Speech-to-Text (STT) using Google Cloud API. It generates VTT file and breaks by sentences, so you can easily apply it to ffmpeg.
 
 You'll need to signup for Google Cloud API and enable Speech-to-Text API. See [Google STT Quickstart](https://cloud.google.com/speech-to-text/docs/quickstart-gcloud) for details.
 
