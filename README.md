@@ -38,7 +38,9 @@ Any format that is accepted by FFmpeg is accepted, for example:
 - `-a` audio: `mp3`, `wav`
 - `-o` output video: `mp4`, `avi`
 
-## stt.sh
+## stt.sh (deprecated)
+
+NOTE: deprecated. See [Autosub Usage](#autosub-usage) for my current workflow.
 
 Speech to Text with Google Cloud Speech-To-Text API.
 
@@ -118,6 +120,30 @@ Output is a JSON like this:
   }
 ]
 ```
+
+## Autosub Usage
+
+Speech-to-Text (STT) using Google Cloud API. This tool generates VTT files so you can apply to ffmpeg.
+
+You'll need to signup for Google Cloud API and enable Speech-to-Text API. See [Google STT Quickstart](https://cloud.google.com/speech-to-text/docs/quickstart-gcloud) for details.
+
+Not to be confused with the original unmaintained `autosub`.
+
+### Install
+
+```bash
+pip3 install git+https://github.com/BingLingGroup/autosub.git@alpha ffmpeg-normalize
+```
+
+### Usage
+
+```bash
+export LC_CTYPE=en_US.UTF-8 # Workaround Python locale normalizer bug <-- IMPORTANT
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/gcloud/api/credential.json
+autosub -sapi gcsv1 -i audio.mp3 -S cmn-hant-tw -F vtt
+```
+
+Now you can edit the `vtt` file. See also: [Web Video Text Tracks Format (WebVTT) - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API)
 
 ## License
 
