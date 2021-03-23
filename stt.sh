@@ -2,22 +2,21 @@
 
 set -e
 
-if ! command -v ffmpeg gcloud curl > /dev/null 2>/dev/null ; then
-  echo "Please install ffmpeg, google-cloud-sdk and curl" 1>&2
-  echo "ffmpeg: brew install ffmpeg" 1>&2
-  echo "gcloud: brew install google-cloud-sdk" 1>&2
-  echo "curl: brew install curl" 1>&2
-  exit 1
-fi
+for tool in ffmpeg gcloud jq; do
+  if ! command -v $tool > /dev/null 2>/dev/null ; then
+    echo "Please install tools:" 1>&2
+    echo "brew install ffmpeg google-cloud-sdk" 1>&2
+    exit 1
+  fi
+done
 
 function print_usage {
-  echo "Usage: $(basename $0) -l zh-TW -a audio.mp3 > output.json" 1>&2
+  echo "Usage: $(basename "$0") -l zh-TW audio.mp3 > stt.txt" 1>&2
   echo "NOTE: Google Cloud will charge you API usage fee." 1>&2
 }
 
-while getopts 'a:l:' opt; do
+while getopts 'l:' opt; do
   case $opt in
-    a) AUDIO=$OPTARG ;;
     l) STT_LANGUAGE=$OPTARG ;;
     *)
       print_usage
@@ -26,35 +25,23 @@ while getopts 'a:l:' opt; do
   esac
 done
 
+shift $((OPTIND -1))
+
+AUDIO="$1"
+
 if [ -z "$AUDIO" ] || [ -z "$STT_LANGUAGE" ] ; then
   print_usage
   exit 1
 fi
 
 # Google Cloud STT only accepts mono audio. WAV works better.
-audio_payload=$(ffmpeg -i "$AUDIO" -ac 1 -f wav - | base64)
+wav=$(mktemp "$TMPDIR/$(uuidgen)".wav)
+ffmpeg -y -loglevel error -i "$AUDIO" -ac 1 -ab 16k "$wav"
 
-data=$(cat << EOS
-{
-  "config": {
-    "encoding":"linear16",
-    "languageCode":"$STT_LANGUAGE",
-    "enableWordTimeOffsets":true,
-    "enableAutomaticPunctuation":true
-  },
-  "audio": {
-    "content":"$audio_payload"
-  }
-}
-EOS
-)
+gcloud ml speech recognize "$wav" \
+    --language-code="$STT_LANGUAGE" \
+    --include-word-time-offsets |
+    jq -r '.results[0].alternatives[0].words[] | [.startTime, .endTime, .word] | @tsv' |
+    sed 's/s\t/\t/g'
 
-# XXX: for some reason if you pipe gcloud output to elsewhere the texts will become ???? (mojibake)
-# So use curl instead.
-echo "$data" |
-  curl -X POST \
-    -s \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $(gcloud auth application-default print-access-token)" \
-    --data @- \
-    https://speech.googleapis.com/v1/speech:recognize
+unlink "$wav"

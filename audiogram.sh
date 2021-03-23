@@ -50,7 +50,7 @@ overlay=
   shortest=1,
 subtitles=
   $SUBTITLES:
-  force_style='PlayResX=1000,PlayResY=1000,FontName=jf-openhuninn-1.0,Fontsize=70,Outline=0,Alignment=4,MarginL=0080,MarginV=0700,PrimaryColour=&H000000&'
+  force_style='PlayResX=1000,PlayResY=1000,FontName=jf-openhuninn-1.1,Fontsize=70,Outline=0,Alignment=4,MarginL=0080,MarginV=0700,PrimaryColour=&H000000&'
 [final]
 EOF
 
