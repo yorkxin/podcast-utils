@@ -1,6 +1,8 @@
-# amcyfm-utils
+# podcast-utils
 
-Utilities for [amcy.fm](https://amcy.fm/) Podcast Production
+Utilities for Podcast Production.
+
+Note: the author does not produce podcasts anymore. Expect no updates from this repository for the foreseeable time. You're free to use the code in this repository according to the license.
 
 ## audiogram.sh
 
